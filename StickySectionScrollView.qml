@@ -24,23 +24,11 @@ Item {
         }
 
         onContentYChanged: {
-            for(let item of mainContent.children) {
-                const offsetTop = __offsetTop()
-                const offsetBottom = __offsetBottom()
+            __updateLayout()
+        }
 
-                const cbStickTop = function () {
-
-                }
-
-                const cbStickBottom = function (section) {
-                    console.log("= cbStickBottom")
-                    __reorderBottomStack()
-                }
-
-                item.layoutSection(flickview, stackTop, stackBottom, offsetTop, offsetBottom, cbStickTop, cbStickBottom)
-
-                __updateExpandState()
-            }
+        onContentHeightChanged: {
+            __updateLayout()
         }
     }
 
@@ -55,12 +43,16 @@ Item {
 
     function toggleExpand(idx) {
         const item = mainContent.children[idx]
-        if(item.__isExpanded) {
-            // __stackNextToTop(idx)
-            item.content.height = 0
+
+        console.log("item.__isExpandedInternal ", item.__isExpandedInternal)
+        console.log("item.__isStackTop ", item.__isStackTop)
+        console.log("item.__isStackBottom ", item.__isStackBottom)
+
+        if(item.__isExpandedInternal) {
+            item.collapse()
         }
         else {
-            __stackToTop(idx)
+            item.expand()
         }
     }
 
@@ -81,22 +73,8 @@ Item {
         }
     }
 
-    function __updateExpandState () {
-        const sz = mainContent.children.length
-        for(let i = 0; i < sz; i++) {
-            const item = mainContent.children[i]
-            const pos = mainContent.mapToItem(root, {x: 0, y: item.y})
-            const isStackTop = pos.y + item.height <= __offsetTop()
-            const isStackBottom = pos.y >= flickview.height - __offsetBottom()
-            if(isStackTop || isStackBottom) {
-                item.__isExpanded = false
-            }
-            else {
-                item.__isExpanded = true
-            }
-            // console.log("=== pos.y ", i, " ", pos.y, " ", flickview.height - stackBottom.height)
-            // console.log("=== ", i, " ", isStackTop, " ", isStackBottom, " ", item.__isExpanded)
-        }
+    function __expandFromBottom () {
+
     }
 
     function __offsetTop () {
@@ -116,9 +94,11 @@ Item {
     }
 
     function __updateChildrenIndex () {
+        console.log("=== __updateChildrenIndex")
         for(let idx =  0; idx < mainContent.children.length; idx++) {
             mainContent.children[idx].__index = idx
         }
+        __reorderBottomStack()
     }
 
     function __reorderBottomStack () {
@@ -138,5 +118,30 @@ Item {
         }
 
         return items
+    }
+
+    function __updateLayout () {
+        for(let item of mainContent.children) {
+            const offsetTop = __offsetTop()
+            const offsetBottom = __offsetBottom()
+
+            const cbStickTop = function () {
+                if(!item.__isExpandedInternal) {
+                    item.expand()
+                    flickview.contentY += item.content.height
+                }
+            }
+
+            const cbStickBottom = function (section) {
+                console.log("= cbStickBottom")
+                __reorderBottomStack()
+
+                if(!item.__isExpandedInternal) {
+                    item.expand()
+                }
+            }
+
+            item.layoutSection(flickview, stackTop, stackBottom, offsetTop, offsetBottom, cbStickTop, cbStickBottom)
+        }
     }
 }

@@ -14,10 +14,22 @@ Window {
 
         items: [
             StickySectionScrollItem {
+                id: item1
                 section: Rectangle {
                     width: 100
                     height: 20
                     color: "black"
+
+                    Rectangle {
+                        width: 10
+                        height: 5
+                        color: "gray"
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                            right: parent.right
+                        }
+                        rotation: item1.isExpanded ? 90 : 0
+                    }
 
                     MouseArea {
                         anchors.fill: parent
@@ -29,7 +41,7 @@ Window {
                 content: Rectangle {
                     width: 100
                     height: 300
-                    color: "blue"
+                    color: "grey"
                 }
             },
 
@@ -38,7 +50,19 @@ Window {
                 section: Rectangle {
                     width: 100
                     height: 35
-                    color: "yellow"
+                    color: "pink"
+
+                    Rectangle {
+                        width: 10
+                        height: 5
+                        color: "gray"
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                            right: parent.right
+                        }
+                        rotation: item2.isExpanded ? 90 : 0
+                    }
+
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
@@ -49,15 +73,28 @@ Window {
                 content: Rectangle {
                     width: 100
                     height: 100
-                    color: "blue"
+                    color: "deeppink"
                 }
             },
 
             StickySectionScrollItem {
+                id: item3
                 section: Rectangle {
                     width: 100
                     height: 45
                     color: "cyan"
+
+                    Rectangle {
+                        width: 10
+                        height: 5
+                        color: "gray"
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                            right: parent.right
+                        }
+                        rotation: item3.isExpanded ? 90 : 0
+                    }
+
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
@@ -68,15 +105,28 @@ Window {
                 content: Rectangle {
                     width: 100
                     height: 50
-                    color: "blue"
+                    color: "darkcyan"
                 }
             },
 
             StickySectionScrollItem {
+                id: item4
                 section: Rectangle {
                     width: 100
                     height: 10
-                    color: "crimson"
+                    color: "yellow"
+
+                    Rectangle {
+                        width: 10
+                        height: 5
+                        color: "gray"
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                            right: parent.right
+                        }
+                        rotation: item4.isExpanded ? 90 : 0
+                    }
+
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
@@ -87,16 +137,29 @@ Window {
                 content: Rectangle {
                     width: 100
                     height: 50
-                    color: "blue"
+                    color: "darkgoldenrod"
                 }
             },
 
             StickySectionScrollItem {
+                id: item5
                 height: 300
                 section: Rectangle {
                     width: 100
                     height: 15
-                    color: "darkcyan"
+                    color: "red"
+
+                    Rectangle {
+                        width: 10
+                        height: 5
+                        color: "gray"
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                            right: parent.right
+                        }
+                        rotation: item5.isExpanded ? 90 : 0
+                    }
+
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
@@ -107,7 +170,7 @@ Window {
                 content: Rectangle {
                     width: 100
                     height: 100
-                    color: "blue"
+                    color: "darkred"
                 }
             }
         ]

@@ -6,12 +6,12 @@ Item {
     property Item section
     property Item content
 
-    readonly property bool isExpanded: __isExpanded
+    readonly property bool isExpanded: __isExpandedInternal && !__isStackTop && !__isStackBottom
 
     property bool __isStackTop: false
     property bool __isStackBottom: false
     property int __index: 0
-    property bool __isExpanded: false
+    property bool __isExpandedInternal: true
 
     height: sectionHolder.height + contentHolder.height
     width: Math.max(content.width, section.width)
@@ -25,7 +25,6 @@ Item {
             id: boundSection
 
             property int __index: root.__index
-
             width: section.width
             height: section.height
             children: [section]
@@ -35,8 +34,9 @@ Item {
     Item {
         id: contentHolder
         y: section.height
+        visible: root.__isExpandedInternal
         width: content.width
-        height: content.height
+        height: root.__isExpandedInternal ? content.height : 0
         children: [content]
     }
 
@@ -65,5 +65,13 @@ Item {
                 boundSection.y = 0
             }
         }
+    }
+
+    function expand () {
+        __isExpandedInternal = true
+    }
+
+    function collapse () {
+        __isExpandedInternal = false
     }
 }
